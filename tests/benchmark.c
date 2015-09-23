@@ -11,12 +11,12 @@ void timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval
 }
 
 
-void print_elapsed(const char *name, const struct timeval *tv) {
+void print_elapsed(const char *name, struct timeval *tv) {
   struct timeval end, result;
   gettimeofday(&end, NULL);
   timeval_subtract(&result, &end, tv);
   long ms = result.tv_sec * 1000 + result.tv_usec / 1000;
-  printf("%s completed in %dms\n", name, ms);
+  printf("%s completed in %ldms\n", name, ms);
 }
 
 
