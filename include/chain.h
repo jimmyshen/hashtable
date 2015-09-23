@@ -27,6 +27,10 @@ Chain* chain_new(void);
  * a pointer to the head of the chain. */
 void chain_add(Chain *chain, char *k, char *v);
 
+/* Adds a new key value pair and assumes k and v are RCString objects so just copies
+ * the pointers and increments refcounts. */
+void chain_add_rcs(Chain *chain, char *k, char *v);
+
 /* Gets the value of a key if it exists. If not, returns NULL. O(n) */
 char* chain_find(Chain *chain, char *k);
 

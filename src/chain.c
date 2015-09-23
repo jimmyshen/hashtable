@@ -29,6 +29,22 @@ void chain_add(Chain *chain, char *k, char *v) {
   }
 }
 
+void chain_add_rcs(Chain *chain, char *k, char *v) {
+  if (!chain) return;
+
+  struct ChainNode *node = malloc(sizeof(struct ChainNode));
+  if (node != NULL) {
+    node->key = k;
+    node->value = v;
+    rcstr_incref(k);
+    rcstr_incref(v);
+    node->next = chain->head;
+    chain->head = node;
+
+    chain->length++;
+  }
+}
+
 char* chain_find(Chain *chain, char *k) {
   for (struct ChainNode *n = chain->head; n; n = n->next)
     if (strcmp(n->key, k) == 0)

@@ -2,11 +2,10 @@
 
 for test in build/test_*
 do
-  echo -n "Running `basename $test...`"
-  output=$($test 2>&1)
+  echo "Running `basename $test...`"
+  $test
   if [ $? -ne 0 ]; then 
-    echo "FAILED:"
-    echo $output
+    echo "FAILED!"
     exit 1
   else
     echo "OK"

@@ -17,7 +17,7 @@ void expect_to_get(HashTable *ht, char *key, char *expected) {
 
 
 int main(void) {
-  size_t initcap = 3;
+  size_t initcap = 10;
   HashTable *newht, *ht = hashtable_new(initcap);
 
   if (!ht)

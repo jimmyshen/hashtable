@@ -8,6 +8,9 @@ BUILD_DIR=build
 
 CFLAGS=-Wall -I$(INCLUDE_DIR)
 
+test: CFLAGS += -DDEBUG
+
+
 SRCS=$(wildcard $(SRC_DIR)/*.c)
 OBJS=$(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 

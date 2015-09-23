@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "debug.h"
 #include "rcstr.h"
 
 
@@ -10,6 +11,8 @@ char* rcstr_new(char *s) {
   
   if (!(rcstr = malloc(sizeof(struct RCStr) + len + 1)))
     return NULL;
+
+  VTRACE("Created \"%s\" (%p)\n", s, rcstr);
 
   rcstr->len = len;
   rcstr->refcount = 1;
@@ -21,13 +24,16 @@ char* rcstr_new(char *s) {
 int rcstr_incref(char *rcs) {
   struct RCStr *rcstr = (void*)(rcs - sizeof(struct RCStr));
   if (rcstr->refcount == 0) return 0;
+  VTRACE("Increasing reference count for \"%s\" (%p)\n", rcs, rcs);
   return ++(rcstr->refcount);
 }
 
 /* Decrease refcount. If refcount == 0, string is deallocated and further access is invalid dereference. */
 int rcstr_decref(char *rcs) {
   struct RCStr *rcstr = (void*)(rcs - sizeof(struct RCStr));
+  VTRACE("Decreasing reference count for \"%s\" (%p)\n", rcs, rcs);
   if (--rcstr->refcount == 0) {
+    VTRACE("Freeing \"%s\" (%p)\n", rcs, rcs);
     free(rcstr);
     return 0;
   }
