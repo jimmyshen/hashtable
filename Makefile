@@ -2,6 +2,7 @@ CC=gcc
 MKDIR=mkdir -p
 RM=rm -f
 SRC_DIR=src
+TESTS_DIR=tests
 INCLUDE_DIR=include
 BUILD_DIR=build
 
@@ -20,4 +21,5 @@ clean:
 test: $(OBJS)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/test_rcstr $(OBJS) tests/test_rcstr.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/test_chain $(OBJS) tests/test_chain.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/test_hashtable $(OBJS) tests/test_hashtable.c
 	./run_tests

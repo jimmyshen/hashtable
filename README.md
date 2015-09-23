@@ -17,7 +17,7 @@ Customizable hash function
 --------------------------
 
 It is possible to override the default string hashing function by setting the `hashfunc` member of a `HashTable` with
-the interface `(uint32_t)(*hashfunc)(char*)`. Subsequent operations on the hash table will use the provided hash
+the interface `uint32_t(*hashfunc)(char*)`. Subsequent operations on the hash table will use the provided hash
 function. Of course, this must be done immediately before the hash table is populated to prevent inconsistencies.
 
 
@@ -25,7 +25,6 @@ Rehashing
 ---------
 
 Rehashing is not an automatic operation and must be triggered manually by calling the `rehash(HashTable*, float)`
-function. This method accepts a single parameter that defines a load threshold. By default, this is 4.0, meaning that
-`n_items / n_buckets` must be greater than or equal to this value in order to rehash. To force a rehash, simply pass
-`0` to this method.
+function. This method accepts a single parameter that defines a load threshold. This means that `n_items / n_buckets`
+must be greater than or equal to this value in order to rehash. To force a rehash, simply pass `0` to this method.
 
