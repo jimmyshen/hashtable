@@ -1,18 +1,23 @@
+CC=gcc
+MKDIR=mkdir -p
+RM=rm -f
 SRC_DIR=src
 INCLUDE_DIR=include
 BUILD_DIR=build
 
 CFLAGS=-Wall -I$(INCLUDE_DIR)
 
-.PHONY: libs
+SRCS=$(wildcard $(SRC_DIR)/*.c)
+OBJS=$(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 
-$(OBJS): $(BUILD_DIR)/%.o : $(SRC_DIR)/%.c
-	mkdir -p $(BUILD_DIR)
-	gcc $(CFLAGS) -c -o $@ $<
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	$(MKDIR) $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(BUILD_DIR)/*
+	$(RM) $(BUILD_DIR)/*
 
 test: $(OBJS)
-	gcc $(CFLAGS) -o $(BUILD_DIR)/test_rcstr tests/test_rcstr.c
-
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/test_rcstr $(OBJS) tests/test_rcstr.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/test_chain $(OBJS) tests/test_chain.c
+	./run_tests

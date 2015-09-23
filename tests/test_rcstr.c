@@ -5,7 +5,6 @@
 #include "testhelpers.h"
 #include "rcstr.h"
 
-
 static char msg[] = "hello world!";
 static const size_t msglen = sizeof(msg) - 1;
 
@@ -35,8 +34,6 @@ int main(void) {
 
   if (rcstr_decref(rcs) != 0)
     testfail("Expected last decref to return 0");
-
-  printf("%c\n", *rcs);
 
   return 0;
 }
