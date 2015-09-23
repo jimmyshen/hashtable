@@ -30,8 +30,8 @@ void chain_add(Chain *chain, char *k, char *v);
 /* Gets the value of a key if it exists. If not, returns NULL. O(n) */
 char* chain_find(Chain *chain, char *k);
 
-/* Updates value of a key if it exists. On success returns true. O(n) */
-bool chain_update(Chain *chain, char *k, char *v);
+/* Updates/inserts value of a key if it exists. O(n) */
+void chain_update(Chain *chain, char *k, char *v);
 
 /* Clears all items from the chain, decrementing refcounts for all key value pairs. O(n) */
 void chain_clear(Chain *chain);

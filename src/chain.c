@@ -37,16 +37,16 @@ char* chain_find(Chain *chain, char *k) {
   return NULL;
 }
 
-bool chain_update(Chain *chain, char *k, char *v) {
+void chain_update(Chain *chain, char *k, char *v) {
   for (struct ChainNode *n = chain->head; n; n = n->next) {
     if (strcmp(n->key, k) == 0) {
       rcstr_decref(n->value);
       n->value = rcstr_new(v);
-      return true;
+      return;
     }
   }
 
-  return false;
+  chain_add(chain, k, v);
 }
 
 void chain_clear(Chain *chain) {

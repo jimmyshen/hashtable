@@ -11,6 +11,7 @@ struct {
 } items[] = {
   {"Alice", "In Chains"},
   {"Bob", "Hope"},
+  {"Charlie", "Brown"},
 };
 
 
@@ -31,10 +32,15 @@ int main(void) {
   if (chain->length != 2)
     testfail("Expected added item to have length 2, instead has length %lu", chain->length);
 
-  if (chain_update(chain, items[1].k, items[0].v) != true)
-    testfail("Expected update of key %s to succeed", items[1].k);
-
+  chain_update(chain, items[1].k, items[0].v);
   if (chain->length != 2)
+    testfail("Expected update of key %s to update existing value", items[1].k);
+
+  chain_update(chain, items[2].k, items[2].v);
+  if (chain->length != 3)
+    testfail("Expected update of key %s to add new item", items[2].k);
+
+  if (chain->length != 3)
     testfail("Expected chain length to remain 2, instead has length %lu", chain->length);
 
   chain_clear(chain);
