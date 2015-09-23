@@ -14,7 +14,6 @@ char* rcstr_new(char *s) {
 
   VTRACE("Created \"%s\" (%p)\n", s, rcstr);
 
-  rcstr->len = len;
   rcstr->refcount = 1;
   strcpy(rcstr->buf, s);
 
@@ -40,13 +39,8 @@ int rcstr_decref(char *rcs) {
   return rcstr->refcount;
 }
 
-/* Return length of string. O(1) operation since we store the length of the string. */
-size_t rcstr_len(char *rcs) {
-  return ((struct RCStr*)(rcs - sizeof(struct RCStr)))->len;
-}
-
 /* Return reference count of string. O(1) operation. */
-size_t rcstr_refcount(char *rcs) {
+refcount rcstr_refcount(char *rcs) {
   return ((struct RCStr*)(rcs - sizeof(struct RCStr)))->refcount;
 }
 

@@ -6,12 +6,10 @@
 #include "rcstr.h"
 
 static char msg[] = "hello world!";
-static const size_t msglen = sizeof(msg) - 1;
-
 
 int main(void) {
   char *rcs;
-  
+
   if ((rcs = rcstr_new(msg)) == NULL)
     testfail("Failed to allocate new rcstr");
 
@@ -24,10 +22,6 @@ int main(void) {
 
   if ((refcnt = rcstr_incref(rcs)) != 2)
     testfail("Expected refcount of 2 after incref; got %d", refcnt);
-
-  size_t rcslen = rcstr_len(rcs);
-  if (msglen != rcslen)
-    testfail("Expected string to be length %lu, got %lu", msglen, rcslen);
 
   if (rcstr_decref(rcs) != 1)
     testfail("Expected first decref to return 1");
