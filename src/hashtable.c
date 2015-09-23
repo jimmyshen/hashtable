@@ -63,6 +63,7 @@ HashTable *hashtable_rehash(HashTable *ht, float threshold) {
 
   HashTable *newht = hashtable_new(ht->capacity << 1);
   if (!newht) return ht;
+  newht->hashfunc = ht->hashfunc;
 
   VTRACE("Rehashing table with %lu items\n", ht->items);
   size_t idx;
