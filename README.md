@@ -1,30 +1,23 @@
-This is a simple chained hash table written in C.
+This is a simple chained hash table written in C purely for mapping strings to strings.
 
-Use of refcounted strings
--------------------------
+Implementation notes
+--------------------
 
-I decided to use a reference counted string type to manage strings kept in the hash table chains.
-These are defined entirely in `rcstr.h`. By using a reference count, the chain does not need to be
-involved in memory management when the heap-allocated string references are copied during a rehashing
-operation.
+- Under the hood, all strings stored in the hash table chains are actually refcounted strings (see `rcstr.h` for
+  interface). This allows for an optimization to prevent expensive string copies during a rehashing at the expense
+  of storing an additional byte of data per item in the table.
 
-I also borrowed ideas from antirez's SDS implementation in Redis [http://redis.io/topics/internals-sds] so that
-these strings can be treated as regular C strings but their refcount metadata could be accessed with the
-right interfaces.
+- Reference counted strings are passed around like normal strings and access to the refcount is managed by interfaces
+  that know the negative offset of the refcount. This is something I picked up from antirez's implementation of strings
+  in Redis [http://redis.io/topics/internals-sds]
 
+- The choice of hash function can be overridden at runtime simply by setting a different function for the `hashfunc`
+  member of the `HashTable` struct. This function must be of the signature `uint32_t(*hashfunc)(char*)`. Of course,
+  this should be overridden *before* any hashing is done. The overridden hash function is inherited for you during
+  re-hash.
 
-Customizable hash function
---------------------------
+- Rehashing is triggered manually via the `rehash(HashTable*, float)` function. The second argument is the threshold
+  that must be met or exceeded in order for rehashing to take place. This means that `n_items / n_buckets`
+  must be greater than this value. To force a rehash, simply pass `0`.
 
-It is possible to override the default string hashing function by setting the `hashfunc` member of a `HashTable` with
-the interface `uint32_t(*hashfunc)(char*)`. Subsequent operations on the hash table will use the provided hash
-function. Of course, this must be done immediately before the hash table is populated to prevent inconsistencies.
-
-
-Rehashing
----------
-
-Rehashing is not an automatic operation and must be triggered manually by calling the `rehash(HashTable*, float)`
-function. This method accepts a single parameter that defines a load threshold. This means that `n_items / n_buckets`
-must be greater than or equal to this value in order to rehash. To force a rehash, simply pass `0` to this method.
-
+- Rehashing doubles the capacity of the hash array each time.
