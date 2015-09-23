@@ -24,8 +24,8 @@ function. Of course, this must be done immediately before the hash table is popu
 Rehashing
 ---------
 
-Rehashing is not an automatic operation and must be triggered manually by calling the `rehash(float)` function. This
-method accepts a single parameter that defines a load threshold. By default, this is 4.0, meaning that
+Rehashing is not an automatic operation and must be triggered manually by calling the `rehash(HashTable*, float)`
+function. This method accepts a single parameter that defines a load threshold. By default, this is 4.0, meaning that
 `n_items / n_buckets` must be greater than or equal to this value in order to rehash. To force a rehash, simply pass
 `0` to this method.
 
