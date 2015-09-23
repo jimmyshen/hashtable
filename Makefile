@@ -8,8 +8,6 @@ BUILD_DIR=build
 
 CFLAGS=-Wall -I$(INCLUDE_DIR)
 
-test: CFLAGS += -DDEBUG
-
 
 SRCS=$(wildcard $(SRC_DIR)/*.c)
 OBJS=$(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
@@ -21,8 +19,13 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	$(RM) $(BUILD_DIR)/*
 
+test: CFLAGS += -DDEBUG
 test: $(OBJS)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/test_rcstr $(OBJS) tests/test_rcstr.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/test_chain $(OBJS) tests/test_chain.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/test_hashtable $(OBJS) tests/test_hashtable.c
 	./run_tests
+
+benchmark: $(OBJS)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/benchmark $(OBJS) tests/benchmark.c
+	$(BUILD_DIR)/benchmark
