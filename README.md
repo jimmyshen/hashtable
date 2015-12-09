@@ -1,4 +1,4 @@
-This is a simple chained hash table written in C purely for mapping strings to strings.
+This is a simple chained hash table written in C purely for mapping strings to strings and was simply done for my own edification -- not for actual use :)
 
 Implementation notes
 --------------------
